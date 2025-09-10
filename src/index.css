@@ -2,76 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Mental Health Platform Design System - Bright & Attractive */
+/* Mental Health Platform Design System - Calming & Trustworthy */
 
 @layer base {
   :root {
-    /* Background colors - bright and fresh */
-    --background: 210 40% 98%;
-    --foreground: 215 35% 20%;
+    /* Background colors - soft, calming */
+    --background: 210 25% 98%;
+    --foreground: 215 25% 27%;
     
-    /* Card colors - pure white with subtle elevation */
+    /* Card colors - clean white with subtle warmth */
     --card: 0 0% 100%;
-    --card-foreground: 215 35% 20%;
+    --card-foreground: 215 25% 27%;
     
     /* Popover colors */
     --popover: 0 0% 100%;
-    --popover-foreground: 215 35% 20%;
+    --popover-foreground: 215 25% 27%;
     
-    /* Primary colors - vibrant blue for trust and energy */
-    --primary: 214 100% 58%;
+    /* Primary colors - calming teal/blue for trust */
+    --primary: 199 89% 48%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 214 100% 96%;
+    --primary-soft: 199 89% 96%;
     
-    /* Secondary colors - energetic purple for creativity */
-    --secondary: 260 100% 65%;
+    /* Secondary colors - warm sage green for healing */
+    --secondary: 142 76% 73%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 260 100% 96%;
+    --secondary-soft: 142 76% 95%;
     
-    /* Muted colors - soft grays with warmth */
-    --muted: 210 25% 96%;
-    --muted-foreground: 215 20% 50%;
+    /* Muted colors - gentle grays */
+    --muted: 210 20% 95%;
+    --muted-foreground: 215 16% 47%;
     
-    /* Accent colors - bright coral for warmth and engagement */
-    --accent: 15 100% 65%;
+    /* Accent colors - gentle coral for warmth */
+    --accent: 25 95% 53%;
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 15 100% 96%;
+    --accent-soft: 25 95% 96%;
     
-    /* Success color - bright emerald green */
-    --success: 150 80% 50%;
+    /* Success color - nature green */
+    --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
-    --success-soft: 150 80% 96%;
+    --success-soft: 142 71% 95%;
     
-    /* Warning color - bright amber */
-    --warning: 45 100% 60%;
-    --warning-foreground: 25 15% 15%;
-    --warning-soft: 45 100% 96%;
+    /* Warning color - gentle yellow */
+    --warning: 48 96% 53%;
+    --warning-foreground: 25 10% 15%;
+    --warning-soft: 48 96% 95%;
     
-    /* Destructive colors - bright but gentle red */
-    --destructive: 0 90% 65%;
+    /* Destructive colors - soft red for gentleness */
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     /* Border and input colors */
-    --border: 210 25% 88%;
-    --input: 210 25% 95%;
-    --ring: 214 100% 58%;
+    --border: 210 20% 90%;
+    --input: 210 20% 95%;
+    --ring: 199 89% 48%;
     
     /* Gradients for beautiful backgrounds */
-    --gradient-primary: linear-gradient(135deg, hsl(214 100% 58%), hsl(260 100% 65%));
-    --gradient-secondary: linear-gradient(135deg, hsl(260 100% 65%), hsl(15 100% 65%));
-    --gradient-soft: linear-gradient(135deg, hsl(214 100% 96%), hsl(260 100% 96%));
-    --gradient-accent: linear-gradient(135deg, hsl(15 100% 96%), hsl(45 100% 96%));
-    --gradient-hero: linear-gradient(135deg, hsl(214 100% 58%), hsl(260 100% 65%), hsl(15 100% 65%));
+    --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%), hsl(142 76% 73%));
+    --gradient-soft: linear-gradient(135deg, hsl(199 89% 96%), hsl(142 76% 95%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 96%), hsl(48 96% 95%));
     
     /* Shadows for depth */
-    --shadow-soft: 0 4px 6px -1px hsl(214 100% 58% / 0.15);
-    --shadow-medium: 0 10px 15px -3px hsl(214 100% 58% / 0.15);
-    --shadow-large: 0 25px 50px -12px hsl(214 100% 58% / 0.3);
-    --shadow-colored: 0 8px 25px -5px hsl(260 100% 65% / 0.25);
+    --shadow-soft: 0 4px 6px -1px hsl(199 89% 48% / 0.1);
+    --shadow-medium: 0 10px 15px -3px hsl(199 89% 48% / 0.1);
+    --shadow-large: 0 25px 50px -12px hsl(199 89% 48% / 0.25);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     --radius: 0.75rem;
 
@@ -93,58 +89,55 @@
   }
 
   .dark {
-    /* Dark mode - bright and vibrant */
-    --background: 215 35% 8%;
-    --foreground: 210 35% 95%;
+    /* Dark mode - still calming but with depth */
+    --background: 215 25% 10%;
+    --foreground: 210 25% 95%;
     
-    --card: 215 35% 10%;
-    --card-foreground: 210 35% 95%;
+    --card: 215 25% 12%;
+    --card-foreground: 210 25% 95%;
     
-    --popover: 215 35% 10%;
-    --popover-foreground: 210 35% 95%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 210 25% 95%;
     
-    --primary: 214 100% 65%;
+    --primary: 199 89% 55%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 214 100% 12%;
+    --primary-soft: 199 89% 15%;
     
-    --secondary: 260 100% 70%;
+    --secondary: 142 76% 65%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 260 100% 12%;
+    --secondary-soft: 142 76% 15%;
     
-    --muted: 215 35% 12%;
-    --muted-foreground: 215 25% 70%;
+    --muted: 215 25% 15%;
+    --muted-foreground: 215 16% 65%;
     
-    --accent: 15 100% 70%;
+    --accent: 25 95% 60%;
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 15 100% 12%;
+    --accent-soft: 25 95% 15%;
     
-    --success: 150 80% 60%;
+    --success: 142 71% 55%;
     --success-foreground: 0 0% 100%;
-    --success-soft: 150 80% 12%;
+    --success-soft: 142 71% 15%;
     
-    --warning: 45 100% 65%;
-    --warning-foreground: 25 15% 15%;
-    --warning-soft: 45 100% 12%;
+    --warning: 48 96% 60%;
+    --warning-foreground: 25 10% 15%;
+    --warning-soft: 48 96% 15%;
     
-    --destructive: 0 90% 70%;
+    --destructive: 0 84% 65%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 215 35% 18%;
-    --input: 215 35% 12%;
-    --ring: 214 100% 65%;
+    --border: 215 25% 20%;
+    --input: 215 25% 15%;
+    --ring: 199 89% 55%;
     
     /* Dark gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(214 100% 25%), hsl(260 100% 25%));
-    --gradient-secondary: linear-gradient(135deg, hsl(260 100% 25%), hsl(15 100% 25%));
-    --gradient-soft: linear-gradient(135deg, hsl(214 100% 12%), hsl(260 100% 12%));
-    --gradient-accent: linear-gradient(135deg, hsl(15 100% 12%), hsl(45 100% 12%));
-    --gradient-hero: linear-gradient(135deg, hsl(214 100% 25%), hsl(260 100% 25%), hsl(15 100% 25%));
+    --gradient-primary: linear-gradient(135deg, hsl(199 89% 25%), hsl(142 76% 25%));
+    --gradient-soft: linear-gradient(135deg, hsl(199 89% 15%), hsl(142 76% 15%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 95% 15%), hsl(48 96% 15%));
     
     /* Dark shadows */
-    --shadow-soft: 0 4px 6px -1px hsl(0 0% 0% / 0.4);
-    --shadow-medium: 0 10px 15px -3px hsl(0 0% 0% / 0.4);
-    --shadow-large: 0 25px 50px -12px hsl(0 0% 0% / 0.6);
-    --shadow-colored: 0 8px 25px -5px hsl(260 100% 25% / 0.4);
+    --shadow-soft: 0 4px 6px -1px hsl(0 0% 0% / 0.3);
+    --shadow-medium: 0 10px 15px -3px hsl(0 0% 0% / 0.3);
+    --shadow-large: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
   }
 }
 
