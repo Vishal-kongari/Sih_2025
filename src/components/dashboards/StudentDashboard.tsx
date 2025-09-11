@@ -155,6 +155,32 @@ export const StudentDashboard = () => {
                   allowFullScreen
                 />
               </div>
+              <div className="aspect-video rounded-xl overflow-hidden border">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/ZXsQAXx_ao0"
+                  title="Motivational: Just Do It (Parody with a powerful message)"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+              <div className="aspect-video rounded-xl overflow-hidden border">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/UNQhuFL6CWg"
+                  title="Study Motivation — The Mindset for Success"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <a className="p-3 rounded-xl border hover:bg-muted/40 transition" href="https://www.youtube.com/watch?v=mgmVOuLgFB0" target="_blank" rel="noreferrer">How to Believe in Yourself – Jim Cathcart (TEDx)</a>
+              <a className="p-3 rounded-xl border hover:bg-muted/40 transition" href="https://www.youtube.com/watch?v=2Lz0VOltZKA" target="_blank" rel="noreferrer">Grit: The Power of Passion and Perseverance – Angela Duckworth</a>
+              <a className="p-3 rounded-xl border hover:bg-muted/40 transition" href="https://www.youtube.com/watch?v=H14bBuluwB8" target="_blank" rel="noreferrer">The Puzzle of Motivation – Dan Pink</a>
+              <a className="p-3 rounded-xl border hover:bg-muted/40 transition" href="https://www.youtube.com/watch?v=5MgBikgcWnY" target="_blank" rel="noreferrer">The First 20 Hours — How to Learn Anything – Josh Kaufman</a>
             </div>
           </CardContent>
         </Card>
