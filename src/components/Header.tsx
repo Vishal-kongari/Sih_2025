@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { MessageCircle, BookOpen, Calendar, Users, Menu, Heart } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -18,31 +19,39 @@ export const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
-          <Button variant="ghost" size="sm" className="text-foreground">
+          <Button asChild variant="ghost" size="sm" className="text-foreground">
+            <Link to="#chat">
             <MessageCircle className="h-4 w-4" />
             Chat Support
+            </Link>
           </Button>
-          <Button variant="ghost" size="sm" className="text-foreground">
+          <Button asChild variant="ghost" size="sm" className="text-foreground">
+            <Link to="#resources">
             <BookOpen className="h-4 w-4" />
             Resources
+            </Link>
           </Button>
-          <Button variant="ghost" size="sm" className="text-foreground">
+          <Button asChild variant="ghost" size="sm" className="text-foreground">
+            <Link to="#book">
             <Calendar className="h-4 w-4" />
             Book Session
+            </Link>
           </Button>
-          <Button variant="ghost" size="sm" className="text-foreground">
+          <Button asChild variant="ghost" size="sm" className="text-foreground">
+            <Link to="#community">
             <Users className="h-4 w-4" />
             Community
+            </Link>
           </Button>
         </nav>
 
         {/* CTA Buttons */}
         <div className="hidden md:flex items-center space-x-3">
-          <Button variant="outline" size="sm">
-            Sign In
+          <Button asChild variant="outline" size="sm">
+            <Link to="/login">Log In</Link>
           </Button>
-          <Button variant="hero" size="sm">
-            Get Started
+          <Button asChild size="sm" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+            <Link to="/signup">Get Started</Link>
           </Button>
         </div>
 
@@ -78,11 +87,11 @@ export const Header = () => {
               Community
             </Button>
             <div className="pt-2 space-y-2">
-              <Button variant="outline" className="w-full">
-                Sign In
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/login">Log In</Link>
               </Button>
-              <Button variant="hero" className="w-full">
-                Get Started
+              <Button asChild className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+                <Link to="/signup">Get Started</Link>
               </Button>
             </div>
           </div>

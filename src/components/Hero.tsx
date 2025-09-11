@@ -4,7 +4,7 @@ import heroImage from "@/assets/hero-mental-health.jpg";
 
 export const Hero = () => {
   return (
-    <section className="relative min-h-[80vh] flex items-center overflow-hidden">
+    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
@@ -12,11 +12,14 @@ export const Hero = () => {
           alt="Students in a peaceful campus setting"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent"></div>
       </div>
 
       {/* Content */}
       <div className="container relative z-10">
+        {/* floating accents */}
+        <div className="pointer-events-none absolute -top-12 right-12 h-24 w-24 rounded-full bg-primary/20 blur-2xl animate-glow" />
+        <div className="pointer-events-none absolute bottom-16 -left-10 h-28 w-28 rounded-full bg-secondary/20 blur-2xl animate-glow" />
         <div className="max-w-2xl">
           <div className="mb-6">
             <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-sm font-medium text-primary">
@@ -38,11 +41,11 @@ export const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Button variant="hero" size="lg" className="group">
+            <Button variant="hero" size="lg" className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
               Start Chat Support
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
-            <Button variant="outline" size="lg">
+            <Button variant="outline" size="lg" className="border-2">
               Explore Resources
             </Button>
           </div>
@@ -50,21 +53,21 @@ export const Hero = () => {
           {/* Trust Indicators */}
           <div className="grid grid-cols-3 gap-6">
             <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-primary-soft rounded-full mb-3 mx-auto">
+              <div className="flex items-center justify-center w-12 h-12 bg-primary-soft rounded-full mb-3 mx-auto animate-float">
                 <Shield className="h-6 w-6 text-primary" />
               </div>
               <p className="text-sm font-medium text-foreground">100% Anonymous</p>
               <p className="text-xs text-muted-foreground">Complete privacy</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-secondary-soft rounded-full mb-3 mx-auto">
+              <div className="flex items-center justify-center w-12 h-12 bg-secondary-soft rounded-full mb-3 mx-auto animate-float-slow">
                 <Clock className="h-6 w-6 text-secondary" />
               </div>
               <p className="text-sm font-medium text-foreground">24/7 Support</p>
               <p className="text-xs text-muted-foreground">Always available</p>
             </div>
             <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-accent-soft rounded-full mb-3 mx-auto">
+              <div className="flex items-center justify-center w-12 h-12 bg-accent-soft rounded-full mb-3 mx-auto animate-float">
                 <Users className="h-6 w-6 text-accent" />
               </div>
               <p className="text-sm font-medium text-foreground">Peer Community</p>
