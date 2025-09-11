@@ -30,6 +30,7 @@ const SignUp = () => {
 
   // On-campus counselor fields
   const [ocName, setOcName] = useState("");
+  const [ocPhone, setOcPhone] = useState("");
   const [ocInstitution, setOcInstitution] = useState("");
 
   return (
@@ -86,7 +87,7 @@ const SignUp = () => {
                     <Label htmlFor="sPhone">Phone Number</Label>
                     <div className="relative">
                       <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="sPhone" placeholder="+91 98765 43210" value={studentPhone} onChange={(e) => setStudentPhone(e.target.value)} className="h-11 pl-10" />
+                      <Input id="sPhone" type="tel" placeholder="+91 98765 43210" value={studentPhone} onChange={(e) => setStudentPhone(e.target.value)} className="h-11 pl-10" />
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -104,7 +105,7 @@ const SignUp = () => {
                     <Label htmlFor="gPhone">Guardian Phone</Label>
                     <div className="relative">
                       <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="gPhone" placeholder="+91 98765 43210" value={guardianPhone} onChange={(e) => setGuardianPhone(e.target.value)} className="h-11 pl-10" />
+                      <Input id="gPhone" type="tel" placeholder="+91 98765 43210" value={guardianPhone} onChange={(e) => setGuardianPhone(e.target.value)} className="h-11 pl-10" />
                     </div>
                   </div>
                   <div className="space-y-2 md:col-span-2">
@@ -116,7 +117,7 @@ const SignUp = () => {
                     <Input id="course" placeholder="B.Tech CSE / MBA / BA Psych..." value={course} onChange={(e) => setCourse(e.target.value)} className="h-11" />
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'student'); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'student', undefined, studentPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
                   Create Student Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -139,7 +140,7 @@ const SignUp = () => {
                     <Label htmlFor="cPhone">Phone Number</Label>
                     <div className="relative">
                       <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="cPhone" placeholder="+91 98765 43210" value={cPhone} onChange={(e) => setCPhone(e.target.value)} className="h-11 pl-10" />
+                      <Input id="cPhone" type="tel" placeholder="+91 98765 43210" value={cPhone} onChange={(e) => setCPhone(e.target.value)} className="h-11 pl-10" />
                     </div>
                   </div>
                   <div className="space-y-2 md:col-span-2">
@@ -154,7 +155,10 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'counselor', cName); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { 
+                  if (!cPhone.trim()) { alert('Please enter your phone number'); return; }
+                  try { const u = await signUpEmail(email, password, 'counselor', cName, cPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } 
+                }}>
                   Create Counselor Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -174,6 +178,13 @@ const SignUp = () => {
                     </div>
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="ocPhone">Phone Number</Label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                      <Input id="ocPhone" type="tel" placeholder="+91 98765 43210" value={ocPhone} onChange={(e) => setOcPhone(e.target.value)} className="h-11 pl-10" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="ocInstitution">Institution</Label>
                     <div className="relative">
                       <Building2 className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -188,7 +199,10 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'on-campus-counselor', ocName); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { 
+                  if (!ocPhone.trim()) { alert('Please enter your phone number'); return; }
+                  try { const u = await signUpEmail(email, password, 'on-campus-counselor', ocName, ocPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } 
+                }}>
                   Create On-Campus Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>

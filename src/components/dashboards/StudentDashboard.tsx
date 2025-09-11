@@ -3,12 +3,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getName, clearAuth } from "@/lib/auth";
 import { signOutUser } from "@/services/auth";
 import { useNavigate } from "react-router-dom";
-import { Brain, Calendar, Star, Target, MessageCircle, BookOpen, Users, Smile, Music, Moon, PlayCircle, Book } from "lucide-react";
+import { Brain, Calendar, Star, Target, MessageCircle, BookOpen, Users, Smile, Music, Moon, PlayCircle, Book, Clock, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { listCounselors, createBooking, listenBookingsForStudent, getUserProfileById, type CounselorProfile, type Booking } from "@/services/bookings";
 import ChatBot from "@/components/ChatBot";
 
 export const StudentDashboard = () => {
   const navigate = useNavigate();
   const name = getName();
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [counselorNames, setCounselorNames] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    let unsub: any;
+    (async () => {
+      unsub = await listenBookingsForStudent((list) => {
+        setBookings(list);
+        // Load counselor names on demand
+        list.forEach(async (b) => {
+          if (!counselorNames[b.counselorId]) {
+            const profile = await getUserProfileById(b.counselorId);
+            setCounselorNames((prev) => ({ ...prev, [b.counselorId]: profile?.name || 'Counselor' }));
+          }
+        });
+      });
+    })();
+    return () => { if (unsub) unsub(); };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-secondary-soft">
       <header className="bg-white/80 backdrop-blur border-b">
@@ -85,22 +107,62 @@ export const StudentDashboard = () => {
         <Card className="md:col-span-3 border-0 shadow-large bg-card/70 backdrop-blur">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-secondary" /> Upcoming Sessions
+              <Calendar className="w-5 h-5 text-secondary" /> My Sessions
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="p-4 rounded-xl border">
-                <p className="font-medium">Stress Management Workshop</p>
-                <p className="text-xs text-muted-foreground">Tomorrow • 2:00 PM</p>
-              </div>
-              <div className="p-4 rounded-xl border">
-                <p className="font-medium">Mindfulness Group Session</p>
-                <p className="text-xs text-muted-foreground">Friday • 4:30 PM</p>
-              </div>
+            <div className="space-y-3">
+              {bookings.length === 0 ? (
+                <div className="text-center py-6 text-muted-foreground">
+                  <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                  <p>No sessions booked yet</p>
+                  <p className="text-xs">Book a session below to get started</p>
+                </div>
+              ) : (
+                bookings.map((booking) => (
+                  <div key={booking.id} className={`p-4 rounded-xl border ${
+                    booking.status === 'accepted' ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800' :
+                    booking.status === 'rejected' ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800' :
+                    'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800'
+                  }`}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">
+                          Session with {counselorNames[booking.counselorId] || 'Counselor'}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Status: <span className={`font-medium ${
+                            booking.status === 'accepted' ? 'text-green-600' :
+                            booking.status === 'rejected' ? 'text-red-600' :
+                            'text-yellow-600'
+                          }`}>
+                            {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                          </span>
+                        </p>
+                        {booking.scheduledTime && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            <Clock className="w-3 h-3 inline mr-1" />
+                            Scheduled: {new Date(booking.scheduledTime).toLocaleString()}
+                          </p>
+                        )}
+                      </div>
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        booking.status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
+                        booking.status === 'rejected' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' :
+                        'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
+                      }`}>
+                        {booking.status === 'accepted' ? '✓ Confirmed' :
+                         booking.status === 'rejected' ? '✗ Declined' :
+                         '⏳ Pending'}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </CardContent>
         </Card>
+        <LiveSessionsSection />
         <Card className="md:col-span-2 border-0 shadow-large bg-card/70 backdrop-blur">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -243,6 +305,153 @@ export const StudentDashboard = () => {
       </main>
       <ChatBot />
     </div>
+  );
+};
+
+const LiveSessionsSection = () => {
+  const [counselors, setCounselors] = useState<CounselorProfile[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [bookingLoading, setBookingLoading] = useState<string | null>(null);
+  const [showCounselors, setShowCounselors] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
+
+  const loadCounselors = async () => {
+    setLoading(true);
+    try {
+      const list = await listCounselors();
+      setCounselors(list);
+      setShowCounselors(true);
+    } catch (error) {
+      console.error('Failed to load counselors:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBooking = async (counselorId: string, counselorName: string) => {
+    setBookingLoading(counselorId);
+    try {
+      await createBooking(counselorId);
+      setBookingSuccess(counselorName);
+      setTimeout(() => setBookingSuccess(null), 3000);
+    } catch (error) {
+      console.error('Failed to book session:', error);
+    } finally {
+      setBookingLoading(null);
+    }
+  };
+
+  return (
+    <Card className="md:col-span-3 border-0 shadow-large bg-card/70 backdrop-blur">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Calendar className="w-5 h-5 text-primary" /> Live Sessions
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {!showCounselors ? (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Book a Live Session</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Connect with our professional counselors for personalized support
+            </p>
+            <Button 
+              onClick={loadCounselors} 
+              disabled={loading}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+            >
+              {loading ? (
+                <>
+                  <Clock className="w-4 h-4 mr-2 animate-spin" />
+                  Loading Counselors...
+                </>
+              ) : (
+                <>
+                  <User className="w-4 h-4 mr-2" />
+                  View Available Counselors
+                </>
+              )}
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-medium">Available Counselors</h4>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setShowCounselors(false)}
+              >
+                Hide
+              </Button>
+            </div>
+            
+            {counselors.length === 0 ? (
+              <div className="text-center py-6 text-muted-foreground">
+                No counselors available right now. Please try again later.
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {counselors.map((counselor) => (
+                  <div key={counselor.id} className="p-4 rounded-xl border bg-card/50 hover:bg-card/70 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 text-white" />
+                          </div>
+                          <div>
+                            <p className="font-medium">{counselor.name}</p>
+                            <p className="text-sm text-muted-foreground">
+                              {counselor.role === 'counselor' ? 'Professional Counselor' : 'On-Campus Counselor'}
+                              {counselor.specialization && ` • ${counselor.specialization}`}
+                            </p>
+                          </div>
+                        </div>
+                        {counselor.availability && (
+                          <p className="text-xs text-muted-foreground ml-13">
+                            Available: {counselor.availability}
+                          </p>
+                        )}
+                      </div>
+                      <Button 
+                        onClick={() => handleBooking(counselor.id, counselor.name)}
+                        disabled={bookingLoading === counselor.id}
+                        className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+                      >
+                        {bookingLoading === counselor.id ? (
+                          <>
+                            <Clock className="w-4 h-4 mr-2 animate-spin" />
+                            Booking...
+                          </>
+                        ) : (
+                          'Book Session'
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            
+            {bookingSuccess && (
+              <div className="p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  ✓ Booking request sent to {bookingSuccess}! You'll be notified when they accept.
+                </p>
+              </div>
+            )}
+            
+            <p className="text-xs text-muted-foreground text-center">
+              You will be notified once the counselor accepts and schedules a time.
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

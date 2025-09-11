@@ -4,6 +4,7 @@
 export type Sentiment = 'ok' | 'distress';
 
 const distressKeywords = [
+  // Direct suicidal ideation
   'i want to end my life',
   'i am done',
   'iam done',
@@ -11,12 +12,83 @@ const distressKeywords = [
   'iwill die',
   'i want to kill myself',
   'iwant to kill myself',
-  'nothing makes sense anymore',
-  'suicide',
+  'kill myself',
+  'end my life',
   'end it all',
+  'suicide',
+  'suicidal',
+  'not worth living',
   'no reason to live',
+  'better off dead',
+  'world without me',
+  
+  // Hopelessness and despair
   'i can\'t go on',
   'cant go on',
+  'nothing makes sense anymore',
+  'nothing matters',
+  'pointless',
+  'hopeless',
+  'give up',
+  'giving up',
+  'i give up',
+  'no point',
+  'no hope',
+  'never get better',
+  'always be like this',
+  'can\'t take it anymore',
+  'cant take it anymore',
+  'too much to handle',
+  'overwhelmed',
+  'drowning',
+  'suffocating',
+  
+  // Self-harm indicators
+  'hurt myself',
+  'cut myself',
+  'self harm',
+  'selfharm',
+  'harm myself',
+  'pain myself',
+  'punish myself',
+  'deserve to suffer',
+  'deserve pain',
+  
+  // Emotional distress patterns
+  'i hate myself',
+  'hate myself',
+  'worthless',
+  'useless',
+  'burden',
+  'everyone hates me',
+  'nobody cares',
+  'no one cares',
+  'alone',
+  'lonely',
+  'empty',
+  'numb',
+  'dead inside',
+  'broken',
+  'damaged',
+  'ruined',
+  'failure',
+  'disappointment',
+  'let everyone down',
+  'disappointed everyone',
+  
+  // Crisis language
+  'emergency',
+  'crisis',
+  'urgent help',
+  'need help now',
+  'can\'t cope',
+  'cant cope',
+  'breaking down',
+  'falling apart',
+  'losing it',
+  'going crazy',
+  'losing control',
+  'out of control'
 ];
 
 export class TinySentimentRNN {

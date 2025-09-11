@@ -17,9 +17,13 @@ export const fetchRole = async (uid: string): Promise<AppRole> => {
   return (snap.exists() ? (snap.data().role as AppRole) : 'student');
 };
 
-export const ensureProfile = async (uid: string, email: string, role: AppRole, name: string) => {
+export const ensureProfile = async (uid: string, email: string, role: AppRole, name: string, phoneNumber?: string) => {
   const db = await getDb();
-  await setDoc(doc(db, 'users', uid), { email, role, name }, { merge: true });
+  const profileData: any = { email, role, name };
+  if (phoneNumber) {
+    profileData.phoneNumber = phoneNumber;
+  }
+  await setDoc(doc(db, 'users', uid), profileData, { merge: true });
 };
 
 export const signInEmail = async (email: string, password: string): Promise<AppUser> => {
@@ -30,11 +34,11 @@ export const signInEmail = async (email: string, password: string): Promise<AppU
   return { id: cred.user.uid, email: cred.user.email || email, role, name };
 };
 
-export const signUpEmail = async (email: string, password: string, role: AppRole, displayName?: string): Promise<AppUser> => {
+export const signUpEmail = async (email: string, password: string, role: AppRole, displayName?: string, phoneNumber?: string): Promise<AppUser> => {
   const auth = await getAuthInstance();
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   const name = (displayName && displayName.trim()) ? displayName.trim() : email.split('@')[0];
-  await ensureProfile(cred.user.uid, email, role, name);
+  await ensureProfile(cred.user.uid, email, role, name, phoneNumber);
   return { id: cred.user.uid, email, role, name };
 };
 
