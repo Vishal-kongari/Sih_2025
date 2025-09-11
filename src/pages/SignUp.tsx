@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, GraduationCap, Building2, User, Phone, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { setRole, setName } from "@/lib/auth";
+import { signUpEmail } from "@/services/auth";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -23,10 +24,12 @@ const SignUp = () => {
   const [course, setCourse] = useState("");
 
   // Counselor fields
+  const [cName, setCName] = useState("");
   const [cPhone, setCPhone] = useState("");
   const [cInfo, setCInfo] = useState("");
 
   // On-campus counselor fields
+  const [ocName, setOcName] = useState("");
   const [ocInstitution, setOcInstitution] = useState("");
 
   return (
@@ -113,7 +116,7 @@ const SignUp = () => {
                     <Input id="course" placeholder="B.Tech CSE / MBA / BA Psych..." value={course} onChange={(e) => setCourse(e.target.value)} className="h-11" />
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('student'); navigate('/dashboard'); }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'student'); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
                   Create Student Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -121,6 +124,10 @@ const SignUp = () => {
               {/* Counselor */}
               <TabsContent value="counselor" className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="cName">Full Name</Label>
+                    <Input id="cName" placeholder="Your full name" value={cName} onChange={(e) => setCName(e.target.value)} className="h-11" />
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="cEmail">Email</Label>
                     <div className="relative">
@@ -147,7 +154,7 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('counselor'); navigate('/dashboard'); }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'counselor', cName); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
                   Create Counselor Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -155,6 +162,10 @@ const SignUp = () => {
               {/* On-campus Counselor */}
               <TabsContent value="on-campus" className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="ocName">Full Name</Label>
+                    <Input id="ocName" placeholder="Your full name" value={ocName} onChange={(e) => setOcName(e.target.value)} className="h-11" />
+                  </div>
                   <div className="space-y-2">
                     <Label htmlFor="ocEmail">Email</Label>
                     <div className="relative">
@@ -177,7 +188,7 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('on-campus-counselor'); navigate('/dashboard'); }}>
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'on-campus-counselor', ocName); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
                   Create On-Campus Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>

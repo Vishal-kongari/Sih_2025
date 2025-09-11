@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getName, clearAuth } from "@/lib/auth";
+import { signOutUser } from "@/services/auth";
 import { useNavigate } from "react-router-dom";
 import { Building2, Activity, AlertTriangle, Users, MapPin, Calendar } from "lucide-react";
 
@@ -20,7 +21,7 @@ export const OnCampusCounselorDashboard = () => {
               <p className="text-xs text-muted-foreground">On-Campus Counselor</p>
             </div>
           </div>
-          <Button variant="outline" onClick={() => { clearAuth(); navigate('/'); }}>Sign Out</Button>
+          <Button variant="outline" onClick={async () => { await signOutUser(); clearAuth(); navigate('/'); }}>Sign Out</Button>
         </div>
       </header>
       <main className="container py-8 grid grid-cols-1 md:grid-cols-3 gap-6">

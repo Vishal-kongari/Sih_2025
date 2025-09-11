@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { setRole, setName } from "@/lib/auth";
+import { signInEmail } from "@/services/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,7 +61,16 @@ const Login = () => {
                 </div>
               </div>
 
-              <Button className="group relative w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('student'); navigate('/dashboard'); }}>
+              <Button className="group relative w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => {
+                try {
+                  const u = await signInEmail(email, password);
+                  setName(u.name);
+                  setRole(u.role);
+                  navigate('/dashboard');
+                } catch (e) {
+                  alert('Login failed. Please check your credentials.');
+                }
+              }}>
                 Log In
                 <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
               </Button>

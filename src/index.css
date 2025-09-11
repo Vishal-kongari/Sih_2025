@@ -19,31 +19,31 @@
     --popover-foreground: 215 25% 27%;
     
     /* Primary colors - calming teal/blue for trust */
-    --primary: 199 89% 48%;
+    --primary: 191 97% 42%;
     --primary-foreground: 0 0% 100%;
-    --primary-soft: 199 89% 96%;
+    --primary-soft: 191 97% 95%;
     
     /* Secondary colors - warm sage green for healing */
-    --secondary: 142 76% 73%;
+    --secondary: 142 84% 55%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-soft: 142 76% 95%;
+    --secondary-soft: 142 84% 93%;
     
     /* Muted colors - gentle grays */
     --muted: 210 20% 95%;
     --muted-foreground: 215 16% 47%;
     
     /* Accent colors - gentle coral for warmth */
-    --accent: 25 95% 53%;
+    --accent: 25 96% 56%;
     --accent-foreground: 0 0% 100%;
-    --accent-soft: 25 95% 96%;
+    --accent-soft: 25 96% 94%;
     
     /* Success color - nature green */
-    --success: 142 71% 45%;
+    --success: 142 72% 44%;
     --success-foreground: 0 0% 100%;
     --success-soft: 142 71% 95%;
     
     /* Warning color - gentle yellow */
-    --warning: 48 96% 53%;
+    --warning: 48 97% 56%;
     --warning-foreground: 25 10% 15%;
     --warning-soft: 48 96% 95%;
     
@@ -57,9 +57,9 @@
     --ring: 199 89% 48%;
     
     /* Gradients for beautiful backgrounds */
-    --gradient-primary: linear-gradient(135deg, hsl(199 89% 48%), hsl(142 76% 73%));
-    --gradient-soft: linear-gradient(135deg, hsl(199 89% 96%), hsl(142 76% 95%));
-    --gradient-accent: linear-gradient(135deg, hsl(25 95% 96%), hsl(48 96% 95%));
+    --gradient-primary: linear-gradient(135deg, hsl(191 97% 42%), hsl(199 90% 55%), hsl(142 84% 55%));
+    --gradient-soft: linear-gradient(135deg, hsl(199 90% 96%), hsl(191 97% 96%), hsl(142 84% 95%));
+    --gradient-accent: linear-gradient(135deg, hsl(25 96% 94%), hsl(48 97% 92%));
     
     /* Shadows for depth */
     --shadow-soft: 0 4px 6px -1px hsl(199 89% 48% / 0.1);
