@@ -72,7 +72,9 @@ const features = [
 
 export const FeatureCards = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-background to-muted/30">
+    <section className="py-20 bg-gradient-to-b from-background via-muted/20 to-background relative overflow-hidden">
+      <div className="pointer-events-none absolute -top-24 left-24 h-72 w-72 rounded-full bg-primary/15 blur-3xl animate-glow" />
+      <div className="pointer-events-none absolute -bottom-24 right-24 h-80 w-80 rounded-full bg-accent/15 blur-3xl animate-glow" />
       <div className="container">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-foreground mb-4">
@@ -87,28 +89,30 @@ export const FeatureCards = () => {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <Card key={index} className="group hover:shadow-medium transition-all duration-300 border-0 bg-card/50 backdrop-blur">
-                <CardHeader className="pb-4">
-                  <div className={`w-12 h-12 rounded-lg bg-${feature.color}-soft flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <Icon className={`h-6 w-6 text-${feature.color}`} />
-                  </div>
-                  <CardTitle className="text-lg font-semibold text-foreground">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <CardDescription className="text-muted-foreground mb-4 leading-relaxed">
-                    {feature.description}
-                  </CardDescription>
-                  <Button 
-                    variant="soft" 
-                    size="sm" 
-                    className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
-                  >
-                    {feature.action}
-                  </Button>
-                </CardContent>
-              </Card>
+              <div key={index} className="rounded-2xl p-px bg-gradient-to-r from-primary/60 via-secondary/60 to-accent/60 shadow-large">
+                <Card className="group border-0 bg-card/70 backdrop-blur rounded-2xl hover:translate-y-[-2px] transition-all duration-300">
+                  <CardHeader className="pb-4">
+                    <div className={`w-12 h-12 rounded-lg bg-${feature.color}-soft flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <Icon className={`h-6 w-6 text-${feature.color}`} />
+                    </div>
+                    <CardTitle className="text-lg font-semibold text-foreground">
+                      {feature.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <CardDescription className="text-muted-foreground mb-4 leading-relaxed">
+                      {feature.description}
+                    </CardDescription>
+                    <Button 
+                      variant="soft" 
+                      size="sm" 
+                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300"
+                    >
+                      {feature.action}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
             );
           })}
         </div>

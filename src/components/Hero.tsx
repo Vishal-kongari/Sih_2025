@@ -1,16 +1,19 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Shield, Users, Clock } from "lucide-react";
-import heroImage from "@/assets/hero-mental-health.jpg";
+import defaultHero from "@/assets/hero-mental-health.jpg";
 
 export const Hero = () => {
+  const [bgSrc, setBgSrc] = useState<string>("/landing-bg.jpg");
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src={heroImage}
+          src={bgSrc}
           alt="Students in a peaceful campus setting"
           className="w-full h-full object-cover"
+          onError={() => setBgSrc(defaultHero)}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent"></div>
       </div>
@@ -20,7 +23,7 @@ export const Hero = () => {
         {/* floating accents */}
         <div className="pointer-events-none absolute -top-12 right-12 h-24 w-24 rounded-full bg-primary/20 blur-2xl animate-glow" />
         <div className="pointer-events-none absolute bottom-16 -left-10 h-28 w-28 rounded-full bg-secondary/20 blur-2xl animate-glow" />
-        <div className="max-w-2xl">
+        <div className="max-w-2xl backdrop-blur-sm bg-background/40 rounded-2xl p-6 shadow-large">
           <div className="mb-6">
             <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-sm font-medium text-primary">
               <Shield className="h-4 w-4 mr-2" />

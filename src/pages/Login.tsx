@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Heart, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setRole, setName } from "@/lib/auth";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <Button className="group relative w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+              <Button className="group relative w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('student'); navigate('/dashboard'); }}>
                 Log In
                 <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
               </Button>

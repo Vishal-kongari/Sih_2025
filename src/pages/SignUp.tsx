@@ -5,9 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, GraduationCap, Building2, User, Phone, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setRole, setName } from "@/lib/auth";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   // Common fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -111,7 +113,7 @@ const SignUp = () => {
                     <Input id="course" placeholder="B.Tech CSE / MBA / BA Psych..." value={course} onChange={(e) => setCourse(e.target.value)} className="h-11" />
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('student'); navigate('/dashboard'); }}>
                   Create Student Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -145,7 +147,7 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('counselor'); navigate('/dashboard'); }}>
                   Create Counselor Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
@@ -175,7 +177,7 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={() => { setName(email.split('@')[0]); setRole('on-campus-counselor'); navigate('/dashboard'); }}>
                   Create On-Campus Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
