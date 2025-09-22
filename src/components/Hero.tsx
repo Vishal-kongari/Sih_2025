@@ -1,84 +1,178 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield, Users, Clock } from "lucide-react";
-import defaultHero from "@/assets/hero-mental-health.jpg";
+import { ArrowRight, Shield, Users, Clock, Sparkles, Heart, Star, ChevronRight } from "lucide-react";
+import { Link } from "react-router-dom";
+import defaultHero from "@/assets/Screenshot 2025-09-20 112724.png";
 
 export const Hero = () => {
   const [bgSrc, setBgSrc] = useState<string>("/landing-bg.jpg");
+
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src={bgSrc}
-          alt="Students in a peaceful campus setting"
-          className="w-full h-full object-cover"
-          onError={() => setBgSrc(defaultHero)}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-transparent"></div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute -bottom-20 -left-20 w-96 h-96 bg-gradient-to-tr from-pink-400/20 to-orange-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-gradient-to-r from-green-400/15 to-teal-400/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '4s' }} />
+        <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-gradient-to-r from-amber-400/15 to-orange-400/15 rounded-full blur-2xl animate-float" style={{ animationDelay: '1s' }} />
+      </div>
+
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 bg-[radial-gradient(#6366f1_1px,transparent_2px)] [background-size:24px_24px]"></div>
       </div>
 
       {/* Content */}
-      <div className="container relative z-10">
-        {/* floating accents */}
-        <div className="pointer-events-none absolute -top-12 right-12 h-24 w-24 rounded-full bg-primary/20 blur-2xl animate-glow" />
-        <div className="pointer-events-none absolute bottom-16 -left-10 h-28 w-28 rounded-full bg-secondary/20 blur-2xl animate-glow" />
-        <div className="max-w-2xl backdrop-blur-sm bg-background/40 rounded-2xl p-6 shadow-large">
-          <div className="mb-6">
-            <span className="inline-flex items-center rounded-full bg-primary-soft px-3 py-1 text-sm font-medium text-primary">
-              <Shield className="h-4 w-4 mr-2" />
-              Completely Confidential & Secure
-            </span>
+      <div className="container relative z-10 px-4">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 max-w-7xl mx-auto">
+          {/* Text Content */}
+          <div className="flex-1 text-center lg:text-left">
+            {/* Badge */}
+            <div className="mb-8 inline-flex items-center rounded-full bg-white/80 backdrop-blur-sm px-4 py-2 text-sm font-semibold text-blue-600 shadow-lg border border-blue-100">
+              <Sparkles className="h-4 w-4 mr-2" />
+              Trusted by Students
+            </div>
+
+            {/* Main Heading */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Mental Wellness
+              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mt-2">
+                Made Accessible
+              </span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Break free from stigma and access personalized mental health support.
+              Our AI-powered platform connects you with professional counselors,
+              peer communities, and evidence-based resources designed for student life.
+            </p>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <Button
+                asChild
+                size="lg"
+                className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 text-base font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 rounded-2xl"
+              >
+                <Link to="/signup" className="flex items-center">
+                  Start Your Journey
+                  <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 px-8 py-6 text-base font-semibold transition-all duration-300 rounded-2xl group"
+              >
+                <span className="flex items-center">
+                  Watch Demo
+                  <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </Button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl">
+              <div className="flex items-center gap-3 p-4 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-blue-600" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-gray-900">100% Anonymous</h3>
+                  <p className="text-sm text-gray-600">Your privacy protected</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex-shrink-0 w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-green-600" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-gray-900">24/7 Support</h3>
+                  <p className="text-sm text-gray-600">Always available</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 bg-white/70 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <Users className="h-6 w-6 text-purple-600" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-semibold text-gray-900">Peer Community</h3>
+                  <p className="text-sm text-gray-600">Connect with peers</p>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl mb-6">
-            Your Mental Health
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              {" "}Matters
-            </span>
-          </h1>
+          {/* Image/Visual Content */}
+          <div className="flex-1 relative">
+            <div className="relative rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-700">
+              <img
+                src={bgSrc}
+                alt="Students in a peaceful campus setting"
+                className="w-full h-auto object-cover"
+                onError={() => setBgSrc(defaultHero)}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 
-          <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-            Access stigma-free mental health support designed specifically for students. 
-            Get AI-guided assistance, book confidential sessions, and connect with a supportive community.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 mb-12">
-            <Button variant="hero" size="lg" className="group bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
-              Start Chat Support
-              <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button variant="outline" size="lg" className="border-2">
-              Explore Resources
-            </Button>
-          </div>
-
-          {/* Trust Indicators */}
-          <div className="grid grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-primary-soft rounded-full mb-3 mx-auto animate-float">
-                <Shield className="h-6 w-6 text-primary" />
+              {/* Floating Stats Card */}
+              <div className="absolute top-6 right-6 bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-lg animate-float">
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <Heart className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-gray-900">95%</p>
+                    <p className="text-xs text-gray-600">Satisfaction</p>
+                  </div>
+                </div>
               </div>
-              <p className="text-sm font-medium text-foreground">100% Anonymous</p>
-              <p className="text-xs text-muted-foreground">Complete privacy</p>
+
+              {/* Floating Review Card */}
+              <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm p-4 rounded-2xl shadow-lg animate-float" style={{ animationDelay: '1.5s' }}>
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                      <Star className="h-4 w-4 text-purple-600 fill-current" />
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">"Life-changing support"</p>
+                    <div className="flex items-center mt-1">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star key={star} className="h-3 w-3 text-amber-400 fill-current" />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-secondary-soft rounded-full mb-3 mx-auto animate-float-slow">
-                <Clock className="h-6 w-6 text-secondary" />
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 gap-4 mt-8">
+              <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-sm text-center">
+                <p className="text-2xl font-bold text-gray-900">50+</p>
+                <p className="text-sm text-gray-600">Expert Counselors</p>
               </div>
-              <p className="text-sm font-medium text-foreground">24/7 Support</p>
-              <p className="text-xs text-muted-foreground">Always available</p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center w-12 h-12 bg-accent-soft rounded-full mb-3 mx-auto animate-float">
-                <Users className="h-6 w-6 text-accent" />
+              <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl shadow-sm text-center">
+                <p className="text-2xl font-bold text-gray-900">24/7</p>
+                <p className="text-sm text-gray-600">Available</p>
               </div>
-              <p className="text-sm font-medium text-foreground">Peer Community</p>
-              <p className="text-xs text-muted-foreground">Connect safely</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Custom Animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        .animate-float {
+          animation: float 8s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 };

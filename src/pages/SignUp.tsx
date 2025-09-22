@@ -34,53 +34,58 @@ const SignUp = () => {
   const [ocInstitution, setOcInstitution] = useState("");
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-accent-soft via-secondary-soft to-primary-soft flex items-center justify-center p-4 overflow-hidden">
-      <div className="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rounded-full bg-secondary/20 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-primary/20 blur-3xl" />
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
-      <div className="w-full max-w-2xl relative">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-2xl mb-4 shadow-large">
-            <Heart className="w-8 h-8 text-white" />
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 flex items-center justify-center p-4 overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-400/20 to-indigo-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-green-400/10 to-teal-400/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '4s' }} />
+      </div>
+
+      <div className="w-full max-w-2xl relative z-10">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl mb-6 shadow-2xl">
+            <Heart className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Create your account</h1>
-          <p className="text-muted-foreground mt-2">Choose your role to get a tailored experience</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Create your account</h1>
+          <p className="text-gray-600 text-lg">Choose your role to get a tailored experience</p>
         </div>
-        <div className="rounded-2xl p-px bg-gradient-to-r from-primary/60 via-secondary/60 to-accent/60 shadow-large">
-        <Card className="border-0 shadow-none bg-background/70 backdrop-blur rounded-2xl">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-2xl">Sign Up</CardTitle>
-            <CardDescription>Select role and fill required details</CardDescription>
+
+        <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden">
+          <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500" />
+          <CardHeader className="pb-6 pt-8">
+            <CardTitle className="text-2xl font-bold text-gray-900 text-center">Sign Up</CardTitle>
+            <CardDescription className="text-center text-gray-600">Select your role and fill in the required details</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-8 pb-8">
             <Tabs defaultValue="student" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="student" className="flex items-center gap-2">
+              <TabsList className="grid w-full grid-cols-3 mb-8 bg-gray-100 p-1 rounded-xl">
+                <TabsTrigger value="student" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
                   <GraduationCap className="w-4 h-4" /> Student
                 </TabsTrigger>
-                <TabsTrigger value="counselor" className="flex items-center gap-2">
+                <TabsTrigger value="counselor" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
                   <User className="w-4 h-4" /> Counselor
                 </TabsTrigger>
-                <TabsTrigger value="on-campus" className="flex items-center gap-2">
+                <TabsTrigger value="on-campus" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
                   <Building2 className="w-4 h-4" /> On-Campus
                 </TabsTrigger>
               </TabsList>
 
               {/* Student */}
-              <TabsContent value="student" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <TabsContent value="student" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="sEmail">Email</Label>
+                    <Label htmlFor="sEmail" className="text-sm font-semibold text-gray-700">Email Address</Label>
                     <div className="relative">
-                      <Mail className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="sEmail" type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} className="h-11 pl-10" />
+                      <Mail className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <Input id="sEmail" type="email" placeholder="you@university.edu" value={email} onChange={(e) => setEmail(e.target.value)} className="h-12 pl-12 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-0 transition-colors" />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="sPassword">Create Password</Label>
+                    <Label htmlFor="sPassword" className="text-sm font-semibold text-gray-700">Create Password</Label>
                     <div className="relative">
-                      <Lock className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <Input id="sPassword" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="h-11 pl-10" />
+                      <Lock className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <Input id="sPassword" type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="h-12 pl-12 border-2 border-gray-200 rounded-xl focus:border-purple-500 focus:ring-0 transition-colors" />
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -117,8 +122,8 @@ const SignUp = () => {
                     <Input id="course" placeholder="B.Tech CSE / MBA / BA Psych..." value={course} onChange={(e) => setCourse(e.target.value)} className="h-11" />
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { try { const u = await signUpEmail(email, password, 'student', undefined, studentPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
-                  Create Student Account <ArrowRight className="w-4 h-4 ml-2" />
+                <Button className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 rounded-xl font-semibold" onClick={async () => { try { const u = await signUpEmail(email, password, 'student', undefined, studentPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } }}>
+                  Create Student Account <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </TabsContent>
 
@@ -155,9 +160,9 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { 
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => {
                   if (!cPhone.trim()) { alert('Please enter your phone number'); return; }
-                  try { const u = await signUpEmail(email, password, 'counselor', cName, cPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } 
+                  try { const u = await signUpEmail(email, password, 'counselor', cName, cPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); }
                 }}>
                   Create Counselor Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -199,23 +204,22 @@ const SignUp = () => {
                     </div>
                   </div>
                 </div>
-                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => { 
+                <Button className="w-full h-12 bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large" onClick={async () => {
                   if (!ocPhone.trim()) { alert('Please enter your phone number'); return; }
-                  try { const u = await signUpEmail(email, password, 'on-campus-counselor', ocName, ocPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); } 
+                  try { const u = await signUpEmail(email, password, 'on-campus-counselor', ocName, ocPhone); setName(u.name); setRole(u.role); navigate('/dashboard'); } catch { alert('Sign up failed'); }
                 }}>
                   Create On-Campus Account <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </TabsContent>
             </Tabs>
 
-            <div className="text-center mt-6 pt-6 border-t">
-              <p className="text-sm text-muted-foreground">
-                Already have an account? <Link to="/login" className="text-primary font-medium">Log in</Link>
+            <div className="text-center mt-8 pt-6 border-t border-gray-200">
+              <p className="text-sm text-gray-600">
+                Already have an account? <Link to="/login" className="text-purple-600 font-semibold hover:text-purple-700 transition-colors">Log in</Link>
               </p>
             </div>
           </CardContent>
         </Card>
-        </div>
       </div>
     </div>
   );

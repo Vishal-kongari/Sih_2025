@@ -4,16 +4,21 @@ import { getName, clearAuth } from "@/lib/auth";
 import { signOutUser } from "@/services/auth";
 import { useNavigate } from "react-router-dom";
 import { Brain, Calendar, Star, Target, MessageCircle, BookOpen, Users, Smile, Music, Moon, PlayCircle, Book, Clock, User } from "lucide-react";
+import { FaBrain, FaHeart, FaLeaf, FaFire, FaRocket, FaGem, FaSun, FaMoon, FaStar, FaTrophy, FaGamepad, FaBook, FaUsers, FaComments, FaCalendarAlt, FaChartLine, FaBullseye, FaLightbulb, FaMagic, FaRainbow, FaPalette, FaInfinity } from "react-icons/fa";
+import { GiMeditation, GiFlowerPot, GiButterfly, GiTreeBranch, GiWaterDrop, GiSunrise, GiSunset, GiCrystalBall, GiMagicSwirl, GiStarFormation, GiHeartWings, GiPeaceDove, GiLotus, GiYinYang } from "react-icons/gi";
+import { MdSelfImprovement, MdPsychology, MdNature, MdSpa, MdHealing, MdFavorite, MdEmojiNature, MdAutoAwesome, MdTrendingUp, MdInsights, MdExplore, MdCelebration, MdLocalFlorist, MdWbSunny, MdNightlight } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { listCounselors, createBooking, listenBookingsForStudent, getUserProfileById, type CounselorProfile, type Booking } from "@/services/bookings";
-import ChatBot from "@/components/ChatBot";
+import PopupChat from "@/components/PopupChat";
+import { testBookingFlow } from "@/lib/bookingTest";
+import { checkFirebaseConfig, getFirebaseConfigStatus } from "@/lib/firebaseConfigCheck";
 
 export const StudentDashboard = () => {
   const navigate = useNavigate();
   const name = getName();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [counselorNames, setCounselorNames] = useState<Record<string, string>>({});
-
+  const [isChatOpen, setIsChatOpen] = useState(false);
   useEffect(() => {
     let unsub: any;
     (async () => {
@@ -32,74 +37,209 @@ export const StudentDashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-soft via-background to-secondary-soft">
-      <header className="bg-white/80 backdrop-blur border-b">
-        <div className="container h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-              <Brain className="w-6 h-6 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 via-blue-50 to-indigo-100 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-r from-pink-300 to-purple-300 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-32 right-20 w-16 h-16 bg-gradient-to-r from-blue-300 to-cyan-300 rounded-full opacity-20 animate-bounce"></div>
+        <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-r from-yellow-300 to-orange-300 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-40 right-1/3 w-14 h-14 bg-gradient-to-r from-green-300 to-emerald-300 rounded-full opacity-20 animate-bounce"></div>
+      </div>
+
+      <header className="bg-white/95 backdrop-blur-md border-b border-gradient-to-r from-purple-200/50 to-blue-200/50 shadow-lg relative z-10">
+        <div className="container h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-purple-600 via-pink-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform hover:scale-105 transition-transform duration-300">
+              <FaBrain className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-semibold">Welcome, {name}</h1>
-              <p className="text-xs text-muted-foreground">Student Dashboard</p>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Welcome back, {name}</h1>
+              <p className="text-sm text-gray-600 flex items-center gap-1">
+                <GiMeditation className="w-4 h-4 text-purple-500" />
+                Student Dashboard
+                {(() => {
+                  const configStatus = getFirebaseConfigStatus();
+                  return configStatus.isValid ? (
+                    <span className="ml-2 inline-flex items-center gap-1 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      Firebase OK
+                    </span>
+                  ) : (
+                    <span className="ml-2 inline-flex items-center gap-1 text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      Config Issue
+                    </span>
+                  );
+                })()}
+              </p>
             </div>
           </div>
-          <Button variant="outline" onClick={async () => { await signOutUser(); clearAuth(); navigate('/'); }}>Sign Out</Button>
+          <Button
+            variant="outline"
+            onClick={async () => { await signOutUser(); clearAuth(); navigate('/'); }}
+            className="border-gray-300 hover:border-red-500 hover:bg-red-50 hover:text-red-600 transition-colors"
+          >
+            Sign Out
+          </Button>
         </div>
       </header>
-      <main className="container py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2 border-0 shadow-large bg-card/70 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary" /> Weekly Goals
+      <main className="container py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <Card className="md:col-span-2 border-0 shadow-2xl bg-white/90 backdrop-blur-sm rounded-3xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-100/30 via-pink-100/20 to-blue-100/30"></div>
+          <CardHeader className="pb-6 relative z-10">
+            <CardTitle className="flex items-center gap-3 text-xl font-bold text-gray-900">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-300">
+                <FaBullseye className="w-6 h-6 text-white" />
+              </div>
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Weekly Goals</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-xl bg-primary-soft">
-                <p className="text-sm text-muted-foreground">Mindfulness Sessions</p>
-                <p className="text-2xl font-bold text-primary">3/5</p>
+          <CardContent className="relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 via-cyan-50 to-blue-100 border-2 border-blue-200/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-blue-300/20 to-cyan-300/20 rounded-full -translate-y-8 translate-x-8"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <GiMeditation className="w-5 h-5 text-blue-600" />
+                    <p className="text-sm text-blue-600 font-semibold">Mindfulness Sessions</p>
+                  </div>
+                  <p className="text-3xl font-bold text-blue-700 mb-2">3/5</p>
+                  <div className="w-full bg-blue-200 rounded-full h-3 shadow-inner">
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full shadow-lg" style={{ width: '60%' }}></div>
+                  </div>
+                  <p className="text-xs text-blue-600 mt-2 font-medium">60% Complete</p>
+                </div>
               </div>
-              <div className="p-4 rounded-xl bg-secondary-soft">
-                <p className="text-sm text-muted-foreground">Daily Check-ins</p>
-                <p className="text-2xl font-bold text-secondary">5/7</p>
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-green-50 via-emerald-50 to-green-100 border-2 border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-green-300/20 to-emerald-300/20 rounded-full -translate-y-8 translate-x-8"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FaHeart className="w-5 h-5 text-green-600" />
+                    <p className="text-sm text-green-600 font-semibold">Daily Check-ins</p>
+                  </div>
+                  <p className="text-3xl font-bold text-green-700 mb-2">5/7</p>
+                  <div className="w-full bg-green-200 rounded-full h-3 shadow-inner">
+                    <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full shadow-lg" style={{ width: '71%' }}></div>
+                  </div>
+                  <p className="text-xs text-green-600 mt-2 font-medium">71% Complete</p>
+                </div>
               </div>
-              <div className="p-4 rounded-xl bg-accent-soft">
-                <p className="text-sm text-muted-foreground">Peer Support</p>
-                <p className="text-2xl font-bold text-accent">1/3</p>
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 border-2 border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-purple-300/20 to-pink-300/20 rounded-full -translate-y-8 translate-x-8"></div>
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <FaUsers className="w-5 h-5 text-purple-600" />
+                    <p className="text-sm text-purple-600 font-semibold">Peer Support</p>
+                  </div>
+                  <p className="text-3xl font-bold text-purple-700 mb-2">1/3</p>
+                  <div className="w-full bg-purple-200 rounded-full h-3 shadow-inner">
+                    <div className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full shadow-lg" style={{ width: '33%' }}></div>
+                  </div>
+                  <p className="text-xs text-purple-600 mt-2 font-medium">33% Complete</p>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="border-0 shadow-large bg-card/70 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Star className="w-5 h-5 text-warning" /> Progress
+        <Card className="border-0 shadow-2xl bg-white/90 backdrop-blur-sm rounded-3xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-100/30 via-orange-100/20 to-red-100/30"></div>
+          <CardHeader className="pb-6 relative z-10">
+            <CardTitle className="flex items-center gap-3 text-xl font-bold text-gray-900">
+              <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-300">
+                <FaTrophy className="w-6 h-6 text-white" />
+              </div>
+              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">Progress</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="relative z-10">
             <div className="text-center">
-              <p className="text-4xl font-bold text-success mb-1">82</p>
-              <p className="text-xs text-muted-foreground">Wellness Score</p>
+              <div className="relative w-32 h-32 mx-auto mb-6">
+                <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
+                  <defs>
+                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="50%" stopColor="#059669" />
+                      <stop offset="100%" stopColor="#047857" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="40" stroke="#e5e7eb" strokeWidth="8" fill="none" />
+                  <circle cx="50" cy="50" r="40" stroke="url(#progressGradient)" strokeWidth="8" fill="none"
+                    strokeDasharray="251.2" strokeDashoffset="45.2" strokeLinecap="round" />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-3xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">82</p>
+                    <p className="text-xs text-gray-500 font-medium">/100</p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600 font-semibold flex items-center justify-center gap-2">
+                  <GiStarFormation className="w-4 h-4 text-yellow-500" />
+                  Wellness Score
+                </p>
+                <div className="flex items-center justify-center gap-1">
+                  <FaStar className="w-3 h-3 text-yellow-400" />
+                  <FaStar className="w-3 h-3 text-yellow-400" />
+                  <FaStar className="w-3 h-3 text-yellow-400" />
+                  <FaStar className="w-3 h-3 text-yellow-400" />
+                  <FaStar className="w-3 h-3 text-gray-300" />
+                </div>
+                <p className="text-xs text-green-600 font-medium">Excellent Progress!</p>
+              </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="md:col-span-3 border-0 shadow-large bg-card/70 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-accent" /> Quick Actions
+        <Card className="md:col-span-3 border-0 shadow-2xl bg-white/90 backdrop-blur-sm rounded-3xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-100/30 via-pink-100/20 to-blue-100/30"></div>
+          <CardHeader className="pb-6 relative z-10">
+            <CardTitle className="flex items-center gap-3 text-xl font-bold text-gray-900">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg transform hover:scale-105 transition-transform duration-300">
+                <FaRocket className="w-6 h-6 text-white" />
+              </div>
+              <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Quick Actions</span>
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Button variant="soft" className="h-14 justify-start">
-                <MessageCircle className="w-4 h-4 mr-2" /> Start AI Chat
+          <CardContent className="relative z-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <Button
+                onClick={() => setIsChatOpen(true)}
+                className="h-20 justify-start bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 hover:from-blue-600 hover:via-cyan-600 hover:to-blue-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 relative overflow-hidden group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                    <FaComments className="w-6 h-6" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg">Start AI Chat</div>
+                    <div className="text-sm opacity-90">Get instant support</div>
+                  </div>
+                </div>
               </Button>
-              <Button variant="outline" className="h-14 justify-start">
-                <Calendar className="w-4 h-4 mr-2" /> Book Session
+              <Button variant="outline" className="h-20 justify-start border-2 border-green-300 bg-gradient-to-r from-green-50 to-emerald-50 hover:border-green-500 hover:bg-gradient-to-r hover:from-green-100 hover:to-emerald-100 hover:text-green-700 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-green-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <FaCalendarAlt className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg">Book Session</div>
+                    <div className="text-sm text-gray-600">Schedule with counselor</div>
+                  </div>
+                </div>
               </Button>
-              <Button variant="outline" className="h-14 justify-start">
-                <BookOpen className="w-4 h-4 mr-2" /> Browse Resources
+              <Button variant="outline" className="h-20 justify-start border-2 border-purple-300 bg-gradient-to-r from-purple-50 to-pink-50 hover:border-purple-500 hover:bg-gradient-to-r hover:from-purple-100 hover:to-pink-100 hover:text-purple-700 transition-all duration-300 transform hover:-translate-y-2 hover:scale-105 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-100/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <FaBook className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg">Browse Resources</div>
+                    <div className="text-sm text-gray-600">Self-help materials</div>
+                  </div>
+                </div>
               </Button>
             </div>
           </CardContent>
@@ -120,22 +260,22 @@ export const StudentDashboard = () => {
                 </div>
               ) : (
                 bookings.map((booking) => (
-                  <div key={booking.id} className={`p-4 rounded-xl border ${
-                    booking.status === 'accepted' ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800' :
-                    booking.status === 'rejected' ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800' :
-                    'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800'
-                  }`}>
+                  <div key={booking.id} className={`p-4 rounded-xl border ${booking.status === 'accepted' ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800' :
+                    booking.status === 'completed' ? 'bg-purple-50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800' :
+                      booking.status === 'rejected' ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800' :
+                        'bg-yellow-50 dark:bg-yellow-950/20 border-yellow-200 dark:border-yellow-800'
+                    }`}>
                     <div className="flex items-center justify-between">
-                      <div>
+                      <div className="flex-1">
                         <p className="font-medium">
                           Session with {counselorNames[booking.counselorId] || 'Counselor'}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Status: <span className={`font-medium ${
-                            booking.status === 'accepted' ? 'text-green-600' :
-                            booking.status === 'rejected' ? 'text-red-600' :
-                            'text-yellow-600'
-                          }`}>
+                          Status: <span className={`font-medium ${booking.status === 'accepted' ? 'text-green-600' :
+                            booking.status === 'completed' ? 'text-purple-600' :
+                              booking.status === 'rejected' ? 'text-red-600' :
+                                'text-yellow-600'
+                            }`}>
                             {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                           </span>
                         </p>
@@ -145,15 +285,27 @@ export const StudentDashboard = () => {
                             Scheduled: {new Date(booking.scheduledTime).toLocaleString()}
                           </p>
                         )}
+                        {booking.completedAt && (
+                          <p className="text-xs text-muted-foreground mt-1">
+                            <Star className="w-3 h-3 inline mr-1" />
+                            Completed: {new Date(booking.completedAt).toLocaleString()}
+                          </p>
+                        )}
+                        {booking.notes && (
+                          <p className="text-xs text-muted-foreground mt-1 italic">
+                            Notes: {booking.notes}
+                          </p>
+                        )}
                       </div>
-                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        booking.status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
-                        booking.status === 'rejected' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' :
-                        'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
-                      }`}>
+                      <div className={`px-2 py-1 rounded-full text-xs font-medium ${booking.status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' :
+                        booking.status === 'completed' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300' :
+                          booking.status === 'rejected' ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' :
+                            'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
+                        }`}>
                         {booking.status === 'accepted' ? '✓ Confirmed' :
-                         booking.status === 'rejected' ? '✗ Declined' :
-                         '⏳ Pending'}
+                          booking.status === 'completed' ? '🏆 Completed' :
+                            booking.status === 'rejected' ? '✗ Declined' :
+                              '⏳ Pending'}
                       </div>
                     </div>
                   </div>
@@ -303,7 +455,7 @@ export const StudentDashboard = () => {
           </CardContent>
         </Card>
       </main>
-      <ChatBot />
+      <PopupChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };
@@ -314,6 +466,7 @@ const LiveSessionsSection = () => {
   const [bookingLoading, setBookingLoading] = useState<string | null>(null);
   const [showCounselors, setShowCounselors] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
+  const [testResult, setTestResult] = useState<string | null>(null);
 
   const loadCounselors = async () => {
     setLoading(true);
@@ -331,13 +484,40 @@ const LiveSessionsSection = () => {
   const handleBooking = async (counselorId: string, counselorName: string) => {
     setBookingLoading(counselorId);
     try {
-      await createBooking(counselorId);
+      console.log('Starting booking process for counselor:', counselorName, 'ID:', counselorId);
+      const bookingId = await createBooking(counselorId);
+      console.log('Booking created successfully with ID:', bookingId);
       setBookingSuccess(counselorName);
       setTimeout(() => setBookingSuccess(null), 3000);
     } catch (error) {
       console.error('Failed to book session:', error);
+      // You could add a toast notification here to show the error to the user
+      alert(`Failed to book session: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setBookingLoading(null);
+    }
+  };
+
+  const handleTestBooking = async () => {
+    try {
+      console.log('Testing booking flow...');
+
+      // First check Firebase configuration
+      const configCheck = checkFirebaseConfig();
+      if (!configCheck.isValid) {
+        setTestResult(`❌ Firebase config issue: ${configCheck.message}`);
+        return;
+      }
+
+      const result = await testBookingFlow();
+      if (result.success) {
+        setTestResult(`✅ Test successful! Booking created with ID: ${result.bookingId}`);
+      } else {
+        setTestResult(`❌ Test failed: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Test booking error:', error);
+      setTestResult(`❌ Test error: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
 
@@ -358,8 +538,8 @@ const LiveSessionsSection = () => {
             <p className="text-sm text-muted-foreground mb-4">
               Connect with our professional counselors for personalized support
             </p>
-            <Button 
-              onClick={loadCounselors} 
+            <Button
+              onClick={loadCounselors}
               disabled={loading}
               className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
             >
@@ -380,15 +560,18 @@ const LiveSessionsSection = () => {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h4 className="font-medium">Available Counselors</h4>
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setShowCounselors(false)}
-              >
-                Hide
-              </Button>
+              <div className="flex gap-2">
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowCounselors(false)}
+                >
+                  Hide
+                </Button>
+              </div>
             </div>
-            
+
             {counselors.length === 0 ? (
               <div className="text-center py-6 text-muted-foreground">
                 No counselors available right now. Please try again later.
@@ -417,7 +600,7 @@ const LiveSessionsSection = () => {
                           </p>
                         )}
                       </div>
-                      <Button 
+                      <Button
                         onClick={() => handleBooking(counselor.id, counselor.name)}
                         disabled={bookingLoading === counselor.id}
                         className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
@@ -436,7 +619,7 @@ const LiveSessionsSection = () => {
                 ))}
               </div>
             )}
-            
+
             {bookingSuccess && (
               <div className="p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
                 <p className="text-sm text-green-700 dark:text-green-300">
@@ -444,7 +627,23 @@ const LiveSessionsSection = () => {
                 </p>
               </div>
             )}
-            
+
+            {testResult && (
+              <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  {testResult}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setTestResult(null)}
+                  className="mt-2"
+                >
+                  Clear
+                </Button>
+              </div>
+            )}
+
             <p className="text-xs text-muted-foreground text-center">
               You will be notified once the counselor accepts and schedules a time.
             </p>

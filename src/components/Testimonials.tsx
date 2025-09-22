@@ -21,23 +21,33 @@ const testimonials = [
 
 export const Testimonials = () => {
   return (
-    <section className="py-16 bg-gradient-to-b from-muted/30 to-background">
+    <section className="py-24 bg-gradient-to-b from-white to-gray-50">
       <div className="container">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-foreground mb-3">Loved by Students</h2>
-          <p className="text-muted-foreground">Real stories from real students</p>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Loved by Students</h2>
+          <p className="text-xl text-gray-600">Real stories from real students who found their path to better mental health</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((t, i) => (
-            <Card key={i} className="border-0 bg-card/50 backdrop-blur">
-              <CardContent className="p-6">
-                <div className="flex gap-1 mb-3">
+            <Card key={i} className="border-0 bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+              <CardContent className="p-8">
+                <div className="flex gap-1 mb-6">
                   {Array.from({ length: 5 }).map((_, i2) => (
-                    <Star key={i2} className="h-4 w-4 text-warning" />
+                    <Star key={i2} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-foreground leading-relaxed mb-4">“{t.quote}”</p>
-                <p className="text-sm text-muted-foreground">{t.name}</p>
+                <blockquote className="text-gray-700 leading-relaxed mb-6 text-lg italic">
+                  "{t.quote}"
+                </blockquote>
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    {t.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{t.name}</p>
+                    <p className="text-sm text-gray-500">Verified Student</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           ))}

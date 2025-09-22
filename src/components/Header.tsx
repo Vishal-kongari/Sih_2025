@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { MessageCircle, BookOpen, Calendar, Users, Menu, Heart } from "lucide-react";
+import { MessageCircle, BookOpen, Calendar, Users, Menu, Heart, X } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -7,50 +7,53 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200/50 bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 shadow-sm">
+      <div className="container flex h-20 items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary">
-            <Heart className="h-5 w-5 text-white" />
+        <div className="flex items-center space-x-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg">
+            <Heart className="h-7 w-7 text-white" />
           </div>
-          <span className="text-xl font-bold text-foreground">MindCare</span>
+          <div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">MindCare</span>
+            <p className="text-xs text-gray-500 -mt-1">Mental Health Support</p>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-1">
-          <Button asChild variant="ghost" size="sm" className="text-foreground">
-            <Link to="#chat">
-            <MessageCircle className="h-4 w-4" />
-            Chat Support
+        <nav className="hidden md:flex items-center space-x-2">
+          <Button asChild variant="ghost" size="sm" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+            <Link to="/login">
+              <MessageCircle className="h-4 w-4 mr-2" />
+              Chat Support
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="text-foreground">
-            <Link to="#resources">
-            <BookOpen className="h-4 w-4" />
-            Resources
+          <Button asChild variant="ghost" size="sm" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+            <Link to="/login">
+              <BookOpen className="h-4 w-4 mr-2" />
+              Resources
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="text-foreground">
-            <Link to="#book">
-            <Calendar className="h-4 w-4" />
-            Book Session
+          <Button asChild variant="ghost" size="sm" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+            <Link to="/login">
+              <Calendar className="h-4 w-4 mr-2" />
+              Book Session
             </Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="text-foreground">
-            <Link to="#community">
-            <Users className="h-4 w-4" />
-            Community
+          <Button asChild variant="ghost" size="sm" className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-colors">
+            <Link to="/login">
+              <Users className="h-4 w-4 mr-2" />
+              Community
             </Link>
           </Button>
         </nav>
 
         {/* CTA Buttons */}
-        <div className="hidden md:flex items-center space-x-3">
-          <Button asChild variant="outline" size="sm">
+        <div className="hidden md:flex items-center space-x-4">
+          <Button asChild variant="outline" size="sm" className="border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-colors">
             <Link to="/login">Log In</Link>
           </Button>
-          <Button asChild size="sm" className="bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+          <Button asChild size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all">
             <Link to="/signup">Get Started</Link>
           </Button>
         </div>
@@ -59,38 +62,46 @@ export const Header = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden"
+          className="md:hidden h-12 w-12"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          <Menu className="h-5 w-5" />
+          {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
       </div>
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background">
-          <div className="container py-4 space-y-2">
-            <Button variant="ghost" className="w-full justify-start">
-              <MessageCircle className="h-4 w-4" />
-              Chat Support
+        <div className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">
+          <div className="container py-6 space-y-3">
+            <Button asChild variant="ghost" className="w-full justify-start h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+              <Link to="/login">
+                <MessageCircle className="h-5 w-5 mr-3" />
+                Chat Support
+              </Link>
             </Button>
-            <Button variant="ghost" className="w-full justify-start">
-              <BookOpen className="h-4 w-4" />
-              Resources
+            <Button asChild variant="ghost" className="w-full justify-start h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+              <Link to="/login">
+                <BookOpen className="h-5 w-5 mr-3" />
+                Resources
+              </Link>
             </Button>
-            <Button variant="ghost" className="w-full justify-start">
-              <Calendar className="h-4 w-4" />
-              Book Session
+            <Button asChild variant="ghost" className="w-full justify-start h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+              <Link to="/login">
+                <Calendar className="h-5 w-5 mr-3" />
+                Book Session
+              </Link>
             </Button>
-            <Button variant="ghost" className="w-full justify-start">
-              <Users className="h-4 w-4" />
-              Community
+            <Button asChild variant="ghost" className="w-full justify-start h-12 text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+              <Link to="/login">
+                <Users className="h-5 w-5 mr-3" />
+                Community
+              </Link>
             </Button>
-            <div className="pt-2 space-y-2">
-              <Button asChild variant="outline" className="w-full">
+            <div className="pt-4 space-y-3 border-t border-gray-200">
+              <Button asChild variant="outline" className="w-full h-12 border-gray-300 hover:border-blue-500 hover:bg-blue-50">
                 <Link to="/login">Log In</Link>
               </Button>
-              <Button asChild className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-large">
+              <Button asChild className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg">
                 <Link to="/signup">Get Started</Link>
               </Button>
             </div>
