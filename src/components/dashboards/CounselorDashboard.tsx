@@ -252,46 +252,10 @@ export const CounselorDashboard = () => {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleTestConnection}
-              className="border-blue-300 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-            >
-              Test DB
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={debugCounselorBookings}
-              className="border-purple-300 hover:border-purple-500 hover:bg-purple-50 hover:text-purple-600 transition-colors"
-            >
-              Debug
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fixCounselorIdMismatch}
-              className="border-orange-300 hover:border-orange-500 hover:bg-orange-50 hover:text-orange-600 transition-colors"
-            >
-              Fix IDs
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCreateTestBooking}
-              className="border-green-300 hover:border-green-500 hover:bg-green-50 hover:text-green-600 transition-colors"
-            >
-              Test Booking
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleAssignPendingBookings}
-              className="border-blue-300 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600 transition-colors"
-            >
-              Assign Bookings
-            </Button>
+
+
+
+
             <Button
               variant="outline"
               onClick={async () => { await signOutUser(); clearAuth(); navigate('/'); }}
