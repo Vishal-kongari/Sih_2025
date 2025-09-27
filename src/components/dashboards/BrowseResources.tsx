@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
     Search,
     Play,
@@ -39,6 +40,7 @@ const isApiKeyConfigured = () => {
 
 const BrowseResources = () => {
     const navigate = useNavigate(); // Add this hook
+    const { t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<YouTubeVideo[]>([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -183,13 +185,13 @@ const BrowseResources = () => {
                                 className="flex items-center gap-2"
                             >
                                 <ArrowLeft className="w-4 h-4" />
-                                Back to Dashboard
+                                {t('browseResources.backToDashboard')}
                             </Button>
                             <div>
                                 <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                                    Browse Resources
+                                    {t('browseResources.title')}
                                 </h1>
-                                <p className="text-sm text-gray-600">Discover videos for meditation, yoga, motivation, and spiritual growth</p>
+                                <p className="text-sm text-gray-600">{t('browseResources.description')}</p>
                             </div>
                         </div>
                     </div>

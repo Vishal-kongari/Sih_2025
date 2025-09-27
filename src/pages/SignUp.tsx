@@ -8,9 +8,11 @@ import { Heart, GraduationCap, Building2, User, Phone, Mail, Lock, Sparkles, Arr
 import { Link, useNavigate } from "react-router-dom";
 import { setRole, setName } from "@/lib/auth";
 import { signUpEmail } from "@/services/auth";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   // Common fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,27 +49,27 @@ const SignUp = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl mb-6 shadow-2xl">
             <Heart className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">Create your account</h1>
-          <p className="text-gray-600 text-lg">Choose your role to get a tailored experience</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">{t('signup.createAccount')}</h1>
+          <p className="text-gray-600 text-lg">{t('signup.chooseRole')}</p>
         </div>
 
         <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden">
           <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500" />
           <CardHeader className="pb-6 pt-8">
-            <CardTitle className="text-2xl font-bold text-gray-900 text-center">Sign Up</CardTitle>
-            <CardDescription className="text-center text-gray-600">Select your role and fill in the required details</CardDescription>
+            <CardTitle className="text-2xl font-bold text-gray-900 text-center">{t('signup.title')}</CardTitle>
+            <CardDescription className="text-center text-gray-600">{t('signup.description')}</CardDescription>
           </CardHeader>
           <CardContent className="px-8 pb-8">
             <Tabs defaultValue="student" className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-8 bg-gray-100 p-1 rounded-xl">
                 <TabsTrigger value="student" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
-                  <GraduationCap className="w-4 h-4" /> Student
+                  <GraduationCap className="w-4 h-4" /> {t('signup.student')}
                 </TabsTrigger>
                 <TabsTrigger value="counselor" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
-                  <User className="w-4 h-4" /> Counselor
+                  <User className="w-4 h-4" /> {t('signup.counselor')}
                 </TabsTrigger>
                 <TabsTrigger value="on-campus" className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-lg transition-all">
-                  <Building2 className="w-4 h-4" /> On-Campus
+                  <Building2 className="w-4 h-4" /> {t('signup.onCampus')}
                 </TabsTrigger>
               </TabsList>
 

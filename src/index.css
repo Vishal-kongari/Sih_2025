@@ -9,66 +9,66 @@
     /* Background colors - soft, calming */
     --background: 210 25% 98%;
     --foreground: 215 25% 27%;
-    
+
     /* Card colors - clean white with subtle warmth */
     --card: 0 0% 100%;
     --card-foreground: 215 25% 27%;
-    
+
     /* Popover colors */
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
-    
+
     /* Primary colors - calming teal/blue for trust */
     --primary: 191 97% 42%;
     --primary-foreground: 0 0% 100%;
     --primary-soft: 191 97% 95%;
-    
+
     /* Secondary colors - warm sage green for healing */
     --secondary: 142 84% 55%;
     --secondary-foreground: 0 0% 100%;
     --secondary-soft: 142 84% 93%;
-    
+
     /* Muted colors - gentle grays */
     --muted: 210 20% 95%;
     --muted-foreground: 215 16% 47%;
-    
+
     /* Accent colors - gentle coral for warmth */
     --accent: 25 96% 56%;
     --accent-foreground: 0 0% 100%;
     --accent-soft: 25 96% 94%;
-    
+
     /* Success color - nature green */
     --success: 142 72% 44%;
     --success-foreground: 0 0% 100%;
     --success-soft: 142 71% 95%;
-    
+
     /* Warning color - gentle yellow */
     --warning: 48 97% 56%;
     --warning-foreground: 25 10% 15%;
     --warning-soft: 48 96% 95%;
-    
+
     /* Destructive colors - soft red for gentleness */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    
+
     /* Border and input colors */
     --border: 210 20% 90%;
     --input: 210 20% 95%;
     --ring: 199 89% 48%;
-    
+
     /* Gradients for beautiful backgrounds */
     --gradient-primary: linear-gradient(135deg, hsl(191 97% 42%), hsl(199 90% 55%), hsl(142 84% 55%));
     --gradient-soft: linear-gradient(135deg, hsl(199 90% 96%), hsl(191 97% 96%), hsl(142 84% 95%));
     --gradient-accent: linear-gradient(135deg, hsl(25 96% 94%), hsl(48 97% 92%));
-    
+
     /* Shadows for depth */
     --shadow-soft: 0 4px 6px -1px hsl(199 89% 48% / 0.1);
     --shadow-medium: 0 10px 15px -3px hsl(199 89% 48% / 0.1);
     --shadow-large: 0 25px 50px -12px hsl(199 89% 48% / 0.25);
-    
+
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
+
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
@@ -92,48 +92,48 @@
     /* Dark mode - still calming but with depth */
     --background: 215 25% 10%;
     --foreground: 210 25% 95%;
-    
+
     --card: 215 25% 12%;
     --card-foreground: 210 25% 95%;
-    
+
     --popover: 215 25% 12%;
     --popover-foreground: 210 25% 95%;
-    
+
     --primary: 199 89% 55%;
     --primary-foreground: 0 0% 100%;
     --primary-soft: 199 89% 15%;
-    
+
     --secondary: 142 76% 65%;
     --secondary-foreground: 0 0% 100%;
     --secondary-soft: 142 76% 15%;
-    
+
     --muted: 215 25% 15%;
     --muted-foreground: 215 16% 65%;
-    
+
     --accent: 25 95% 60%;
     --accent-foreground: 0 0% 100%;
     --accent-soft: 25 95% 15%;
-    
+
     --success: 142 71% 55%;
     --success-foreground: 0 0% 100%;
     --success-soft: 142 71% 15%;
-    
+
     --warning: 48 96% 60%;
     --warning-foreground: 25 10% 15%;
     --warning-soft: 48 96% 15%;
-    
+
     --destructive: 0 84% 65%;
     --destructive-foreground: 0 0% 100%;
-    
+
     --border: 215 25% 20%;
     --input: 215 25% 15%;
     --ring: 199 89% 55%;
-    
+
     /* Dark gradients */
     --gradient-primary: linear-gradient(135deg, hsl(199 89% 25%), hsl(142 76% 25%));
     --gradient-soft: linear-gradient(135deg, hsl(199 89% 15%), hsl(142 76% 15%));
     --gradient-accent: linear-gradient(135deg, hsl(25 95% 15%), hsl(48 96% 15%));
-    
+
     /* Dark shadows */
     --shadow-soft: 0 4px 6px -1px hsl(0 0% 0% / 0.3);
     --shadow-medium: 0 10px 15px -3px hsl(0 0% 0% / 0.3);
@@ -153,29 +153,92 @@
 
 /* Landing page animations and utilities */
 @keyframes float1 {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
-}
-@keyframes float2 {
-  0% { transform: translateY(0px) translateX(0px); }
-  50% { transform: translateY(8px) translateX(6px); }
-  100% { transform: translateY(0px) translateX(0px); }
-}
-@keyframes glowPulse {
-  0% { opacity: .45; }
-  50% { opacity: .9; }
-  100% { opacity: .45; }
-}
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
-.animate-float-slow { animation: float1 6s ease-in-out infinite; }
-.animate-float { animation: float2 5s ease-in-out infinite; }
-.animate-glow { animation: glowPulse 4s ease-in-out infinite; }
+@keyframes float2 {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+
+  50% {
+    transform: translateY(8px) translateX(6px);
+  }
+
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes glowPulse {
+  0% {
+    opacity: .45;
+  }
+
+  50% {
+    opacity: .9;
+  }
+
+  100% {
+    opacity: .45;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-float-slow {
+  animation: float1 6s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float2 5s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
 .animate-shimmer {
   background-size: 200% 100%;
   animation: shimmer 3s linear infinite;
+}
+
+/* Multilingual font support */
+[lang="hi"] {
+  font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+[lang="te"] {
+  font-family: 'Noto Sans Telugu', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+[lang="ta"] {
+  font-family: 'Noto Sans Tamil', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Language-specific text rendering */
+[lang="hi"],
+[lang="te"],
+[lang="ta"] {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
