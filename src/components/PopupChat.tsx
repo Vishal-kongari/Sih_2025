@@ -237,6 +237,8 @@ const PopupChat = ({ isOpen, onClose }: PopupChatProps) => {
 
     // Load conversation and profile from localStorage on mount
     useEffect(() => {
+        console.log('PopupChat mounted, loading data...');
+
         const saved = localStorage.getItem('gemini-chat-conversation');
         if (saved) {
             try {
@@ -245,6 +247,7 @@ const PopupChat = ({ isOpen, onClose }: PopupChatProps) => {
                     timestamp: new Date(msg.timestamp)
                 }));
                 setMessages(parsedMessages);
+                console.log('Loaded conversation history:', parsedMessages.length, 'messages');
             } catch (error) {
                 console.error('Error loading chat history:', error);
             }
@@ -253,38 +256,52 @@ const PopupChat = ({ isOpen, onClose }: PopupChatProps) => {
         const savedProfile = localStorage.getItem('gemini-chat-profile');
         if (savedProfile) {
             try {
-                setUserProfile(JSON.parse(savedProfile));
+                const profile = JSON.parse(savedProfile);
+                setUserProfile(profile);
+                console.log('Loaded user profile:', profile);
+                setShowProfileSetup(false);
             } catch (error) {
                 console.error('Error loading user profile:', error);
+                setShowProfileSetup(true);
             }
         } else {
+            console.log('No profile found, showing setup');
             setShowProfileSetup(true);
         }
     }, []);
 
     // Save conversation to localStorage whenever messages change
     useEffect(() => {
-        localStorage.setItem('gemini-chat-conversation', JSON.stringify(messages));
+        if (messages.length > 0) {
+            localStorage.setItem('gemini-chat-conversation', JSON.stringify(messages));
+        }
     }, [messages]);
 
     // Save profile to localStorage when it changes
     useEffect(() => {
         if (userProfile) {
             localStorage.setItem('gemini-chat-profile', JSON.stringify(userProfile));
+            console.log('Saved user profile:', userProfile);
         }
     }, [userProfile]);
 
     // Depression detection function
     const detectDepressionSignals = (text: string): boolean => {
         const concerningPhrases = [
-            'i want to die', 'kill myself', 'end it all', 'no reason to live',
+            'i want to die', 'i want to kill myself', 'end it all', 'no reason to live',
             'suicide', 'want to disappear', 'better off without me', 'hate myself',
             'can\'t go on', 'tired of living', 'give up', 'self harm', 'hurt myself',
             'never be happy', 'nothing matters', 'hopeless', 'helpless', 'worthless'
         ];
 
         const lowercaseText = text.toLowerCase();
-        return concerningPhrases.some(phrase => lowercaseText.includes(phrase));
+        const detected = concerningPhrases.some(phrase => lowercaseText.includes(phrase));
+
+        if (detected) {
+            console.log('🚨 Depression signal detected:', text);
+        }
+
+        return detected;
     };
 
     // Trigger emergency alert
@@ -322,101 +339,112 @@ const PopupChat = ({ isOpen, onClose }: PopupChatProps) => {
         await sendEmergencyEmail(userProfile);
     };
 
-    const sendToGemini = async (prompt: string): Promise<string> => {
-        const apiKey = "AIzaSyDLQPM-0CH_RdjgQAtf_4v7-e-ddz7LcoU";
+    // Smart AI Response Generator (Mock)
+    const generateAIResponse = async (userMessage: string): Promise<string> => {
+        console.log('🤖 Generating AI response for:', userMessage);
 
-        // Enhanced system prompt for mental health support
-        const systemPrompt = `You are a compassionate mental wellness assistant designed to help students with their mental health and emotional wellbeing. You should:
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
 
-1. **Be empathetic and supportive** - Show genuine care and understanding
-2. **Provide practical advice** - Offer actionable coping strategies and techniques
-3. **Maintain professional boundaries** - While being warm, stay within appropriate limits
-4. **Encourage professional help** - Suggest seeking professional counseling when appropriate
-5. **Be conversational** - Respond naturally and build on the conversation
-6. **Focus on mental health** - Specialize in stress, anxiety, depression, academic pressure, and student life challenges
-7. **Be encouraging** - Help build confidence and hope
-8. **Ask thoughtful questions** - Show interest in their wellbeing and progress
+        const lowercaseMessage = userMessage.toLowerCase();
 
-Remember: You're having a real-time conversation. Reference previous messages naturally and build rapport. Keep responses helpful but not overly long (2-3 sentences typically).`;
-
-        try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [
-                        {
-                            parts: [
-                                {
-                                    text: `${systemPrompt}\n\nConversation history:\n${messages.slice(-6).map(m => `${m.role}: ${m.content}`).join('\n')}\n\nUser: ${prompt}`
-                                }
-                            ]
-                        }
-                    ],
-                    generationConfig: {
-                        temperature: 0.7,
-                        topK: 40,
-                        topP: 0.95,
-                        maxOutputTokens: 300,
-                    },
-                    safetySettings: [
-                        {
-                            category: "HARM_CATEGORY_HARASSMENT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_HATE_SPEECH",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        },
-                        {
-                            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-                            threshold: "BLOCK_MEDIUM_AND_ABOVE"
-                        }
-                    ]
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || getFallbackResponse();
-            return reply.trim();
-        } catch (error) {
-            console.error('Gemini API error:', error);
-            return getFallbackResponse();
+        // Mental health related responses
+        if (lowercaseMessage.includes('stress') || lowercaseMessage.includes('anxious') || lowercaseMessage.includes('anxiety')) {
+            const responses = [
+                "I understand that stress and anxiety can be overwhelming. Remember to take deep breaths and focus on one thing at a time. Would you like to talk more about what's causing these feelings?",
+                "Stress is a natural response, but it's important to manage it. Try some deep breathing exercises or take a short walk. You're not alone in this - I'm here to listen.",
+                "Anxiety can feel overwhelming, but there are ways to cope. Have you tried mindfulness exercises or talking to someone you trust about how you're feeling?"
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
         }
-    };
 
-    const getFallbackResponse = (): string => {
-        const fallbackResponses = [
-            "I'm here to listen and support you. Can you tell me more about what's on your mind?",
-            "It sounds like you're going through a tough time. Your feelings are valid and important.",
-            "I'm really glad you reached out. Sometimes just talking about what we're experiencing can help.",
-            "I can hear that you're struggling right now. You're not alone in this, and I'm here to help.",
-            "Thank you for trusting me with what you're going through. Let's work through this together.",
-            "I'm here to support you through this. What would be most helpful for you right now?",
-            "Your wellbeing matters to me. Can you share more about what's been challenging lately?",
-            "I appreciate you opening up. How can I best support you today?"
+        if (lowercaseMessage.includes('sad') || lowercaseMessage.includes('depress') || lowercaseMessage.includes('down')) {
+            const responses = [
+                "I'm really sorry you're feeling this way. Your feelings are valid and important. Sometimes just expressing how we feel can help lighten the load.",
+                "It sounds like you're going through a tough time. Remember that it's okay to not be okay. Would it help to talk about what's been weighing on you?",
+                "I hear that you're feeling down. These feelings can be really challenging. You're showing strength by reaching out, and that's something to be proud of."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        if (lowercaseMessage.includes('angry') || lowercaseMessage.includes('frustrat') || lowercaseMessage.includes('mad')) {
+            const responses = [
+                "Anger is a natural emotion, and it's okay to feel this way. Sometimes taking a moment to pause and breathe can help. Would you like to explore what's triggering these feelings?",
+                "I understand you're feeling frustrated. It might help to step away for a moment and do something calming. Remember, your feelings are valid.",
+                "Anger can be overwhelming. Try some physical activity or deep breathing to help release that energy. I'm here to listen if you want to talk it through."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        if (lowercaseMessage.includes('lonely') || lowercaseMessage.includes('alone') || lowercaseMessage.includes('isolat')) {
+            const responses = [
+                "Feeling lonely can be really difficult. Remember that you matter and there are people who care about you. Would you like to talk about what's making you feel this way?",
+                "Loneliness can be challenging, but you're not alone in feeling this way. Reaching out is a brave first step. I'm here to listen whenever you need.",
+                "I hear that you're feeling lonely. Sometimes connecting with others, even in small ways, can help. You're important and your feelings matter."
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        if (lowercaseMessage.includes('sleep') || lowercaseMessage.includes('tired') || lowercaseMessage.includes('exhaust')) {
+            const responses = [
+                "Sleep issues can really affect our wellbeing. Establishing a relaxing bedtime routine might help. Have you tried limiting screen time before bed?",
+                "Feeling tired can make everything seem more difficult. Remember to be gentle with yourself and prioritize rest. Your body is telling you it needs care.",
+                "Sleep is so important for mental health. Try creating a calm environment before bed - maybe some gentle music or reading. How have you been sleeping lately?"
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // General supportive responses
+        const generalResponses = [
+            "Thank you for sharing that with me. I'm here to listen and support you. How are you feeling about this?",
+            "I appreciate you opening up. Your feelings are completely valid. Would you like to explore this more together?",
+            "I'm really glad you reached out. Sometimes just talking about what we're going through can make a difference. How can I best support you right now?",
+            "I hear what you're saying, and I want you to know that you're not alone in this. Your wellbeing matters to me.",
+            "Thank you for trusting me with this. It takes courage to share what you're experiencing. Let's work through this together.",
+            "I understand this might be difficult to talk about. Take your time - I'm here to listen whenever you're ready.",
+            "Your feelings are important, and I'm here to support you. What's been on your mind lately?",
+            "I can hear that you're going through something challenging. Remember to be kind to yourself during this time.",
+            "It sounds like you're dealing with a lot right now. I'm here to help you navigate these feelings.",
+            "Thank you for being open with me. Your perspective is valuable, and I'm here to support you."
         ];
-        return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+
+        // For casual/non-mental health questions
+        if (lowercaseMessage.includes('hello') || lowercaseMessage.includes('hi') || lowercaseMessage.includes('hey')) {
+            return "Hello! I'm here to listen and support you. How are you feeling today?";
+        }
+
+        if (lowercaseMessage.includes('how are you')) {
+            return "I'm here and ready to listen to whatever you'd like to share. How are you really doing today?";
+        }
+
+        if (lowercaseMessage.includes('thank')) {
+            return "You're very welcome. I'm glad I can be here for you. Remember, it's okay to reach out whenever you need support.";
+        }
+
+        // Default mental health focused response
+        return generalResponses[Math.floor(Math.random() * generalResponses.length)];
     };
 
     const handleSend = async () => {
-        if (!input.trim() || loading) return;
+        console.log('🎯 handleSend triggered');
+
+        if (!input.trim()) {
+            console.log('Input empty, returning');
+            return;
+        }
+
+        if (loading) {
+            console.log('Already loading, returning');
+            return;
+        }
 
         const content = input.trim();
+        console.log('📝 Processing message:', content);
         setLoading(true);
 
         // Check for concerning content
         if (detectDepressionSignals(content) && userProfile) {
+            console.log('🚨 Triggering emergency alert');
             triggerEmergencyAlert(content);
         }
 
@@ -431,7 +459,9 @@ Remember: You're having a real-time conversation. Reference previous messages na
         setInput("");
 
         try {
-            const reply = await sendToGemini(content);
+            console.log('🔄 Generating AI response...');
+            const reply = await generateAIResponse(content);
+
             const assistantMessage: ChatMessage = {
                 id: crypto.randomUUID(),
                 role: 'assistant',
@@ -439,17 +469,19 @@ Remember: You're having a real-time conversation. Reference previous messages na
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, assistantMessage]);
+            console.log('✅ Message processed successfully');
         } catch (error) {
-            console.error('Chat error:', error);
+            console.error('❌ Chat error:', error);
             const errorMessage: ChatMessage = {
                 id: crypto.randomUUID(),
                 role: 'assistant',
-                content: "I'm having trouble responding right now. Can you try again?",
+                content: "I'm having trouble responding right now. Please try again in a moment.",
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setLoading(false);
+            console.log('🏁 Request completed');
         }
     };
 
@@ -461,12 +493,15 @@ Remember: You're having a real-time conversation. Reference previous messages na
     };
 
     const clearConversation = () => {
+        console.log('🗑️ Clearing conversation');
         setMessages([]);
         localStorage.removeItem('gemini-chat-conversation');
     };
 
     const handleProfileSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('📋 Profile form submitted');
+
         const formData = new FormData(e.target as HTMLFormElement);
 
         const profile: UserProfile = {
@@ -477,6 +512,7 @@ Remember: You're having a real-time conversation. Reference previous messages na
             guardianEmail: formData.get('guardianEmail') as string || undefined
         };
 
+        console.log('💾 Setting user profile:', profile);
         setUserProfile(profile);
         setShowProfileSetup(false);
     };
@@ -496,7 +532,7 @@ Remember: You're having a real-time conversation. Reference previous messages na
                             </div>
                             <div>
                                 <p className="font-semibold text-sm">AI Wellness Assistant</p>
-                                <p className="text-xs opacity-90">Powered by Gemini</p>
+                                <p className="text-xs opacity-90">Here to support you</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
